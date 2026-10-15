@@ -1,11 +1,10 @@
-import { useEffect, useState, type ReactNode } from 'react';
-import { getJson } from '../api/client.js';
+import type { ReactNode } from 'react';
 
 type Props<T> = {
   title: string;
   description: string;
-  endpoint: string;
-  collection: string;
+  items: T[] | null;
+  error: string | null;
   emptyMessage: string;
   renderItem: (item: T) => ReactNode;
 };
@@ -13,36 +12,11 @@ type Props<T> = {
 export function CapabilityCard<T>({
   title,
   description,
-  endpoint,
-  collection,
+  items,
+  error,
   emptyMessage,
   renderItem,
 }: Props<T>) {
-  const [items, setItems] = useState<T[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setItems(null);
-    setError(null);
-    getJson<Record<string, unknown>>(endpoint)
-      .then((response) => {
-        const collectionItems = response[collection];
-        if (!Array.isArray(collectionItems)) {
-          throw new Error('The server returned an unexpected response.');
-        }
-        if (!cancelled) setItems(collectionItems as T[]);
-      })
-      .catch((requestError: unknown) => {
-        if (!cancelled) {
-          setError(requestError instanceof Error ? requestError.message : 'Unable to load data.');
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [collection, endpoint]);
-
   return (
     <section className="card h-100">
       <div className="card-body">
