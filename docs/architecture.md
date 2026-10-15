@@ -48,4 +48,4 @@ Run the checks in dependency order: data contract, API contract, frontend contra
 - Backend build: `npm run build --prefix octofit-tracker/backend` checks TypeScript compilation; failures indicate backend type or module errors.
 - Frontend build: `npm run build --prefix octofit-tracker/frontend` checks TypeScript and Vite production bundling; failures indicate frontend type or build errors.
 
-Current baseline: the frontend contract suite has 15 failing tests; the backend suite has 8 failures and 1 passing test (idempotent seed). Re-run the relevant command after each tier change and update this baseline as the contracts pass.
+Current verification: the data contract suite passes all 5 tests, the API contract suite passes all 4 tests, and the frontend contract suite passes all 15 tests. Both backend and frontend production builds pass.
